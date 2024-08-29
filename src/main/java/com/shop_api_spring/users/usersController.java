@@ -2,7 +2,7 @@ package com.shop_api_spring.users;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shop_api_spring.exeption.NotFoundException;
+import com.shop_api_spring.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

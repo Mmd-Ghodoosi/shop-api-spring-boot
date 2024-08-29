@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.shop_api_spring.exeption.NotFoundException;
+import com.shop_api_spring.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
