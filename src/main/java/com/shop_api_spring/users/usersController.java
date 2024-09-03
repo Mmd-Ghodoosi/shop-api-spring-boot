@@ -3,7 +3,9 @@ package com.shop_api_spring.users;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shop_api_spring.exception.NotFoundException;
+import com.shop_api_spring.users.dto.usersDto;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,8 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/users")
 public class usersController {
     private final usersService userService;
 
@@ -31,6 +35,18 @@ public class usersController {
         var errors = new HashMap<String, String>();
         errors.put("error", ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        var errors = new HashMap<String, String>();
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            var fieldName = ((FieldError) error).getField();
+            var errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/findUsers")
@@ -49,9 +65,11 @@ public class usersController {
     }
 
     @PostMapping("/createUser")
-    public usersEntity createUser(@RequestBody usersEntity body) {
+    public ResponseEntity<usersEntity> createUser(@Valid @RequestBody usersDto body) {
 
-        return userService.createUser(body);
+        usersEntity createdUser = userService.createUser(body);
+
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteAUser/{id}")
