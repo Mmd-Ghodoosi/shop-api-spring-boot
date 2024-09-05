@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class productDto {
+public class ProductDto {
         @NotEmpty(message = "name can not be empty")
         private String name;
         @NotEmpty(message = "price can not be empty")

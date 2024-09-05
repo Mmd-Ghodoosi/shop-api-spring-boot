@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.shop_api_spring.exception.NotFoundException;
-import com.shop_api_spring.products.dto.productDto;
+import com.shop_api_spring.products.dto.ProductDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
-public class productsController {
-    private final productsService productsService;
+public class ProductsController {
+    private final ProductsService productsService;
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleNotFoundResponseEntity(NotFoundException ex) {
@@ -50,20 +50,20 @@ public class productsController {
     }
 
     @PostMapping("/createProduct")
-    public ResponseEntity<productsEntity> createProduct(@Valid @RequestPart("product") productDto product,
+    public ResponseEntity<ProductsEntity> createProduct(@Valid @RequestPart("product") ProductDto product,
             @RequestPart("image") MultipartFile file) {
 
-        productsEntity createdProduct = productsService.createProduct(product, file);
+        ProductsEntity createdProduct = productsService.createProduct(product, file);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
     @GetMapping("/findProducts")
-    public List<productsEntity> findProducts() {
+    public List<ProductsEntity> findProducts() {
         return productsService.findProducts();
     }
 
     @GetMapping("/findAProduct/{id}")
-    public productsEntity findAProduct(@PathVariable int id) {
+    public ProductsEntity findAProduct(@PathVariable int id) {
         return productsService.findAProduct(id);
     }
 
@@ -73,7 +73,7 @@ public class productsController {
     }
 
     @PutMapping("editProduct/{id}")
-    public productsEntity editProduct(@PathVariable int id, @RequestPart("product") productsEntity body,
+    public ProductsEntity editProduct(@PathVariable int id, @RequestPart("product") ProductsEntity body,
             @RequestPart("image") MultipartFile file) {
         String filename = file.getOriginalFilename();
         body.setImage(filename);

@@ -3,7 +3,7 @@ package com.shop_api_spring.users;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shop_api_spring.exception.NotFoundException;
-import com.shop_api_spring.users.dto.usersDto;
+import com.shop_api_spring.users.dto.UsersDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-public class usersController {
-    private final usersService userService;
+public class UsersController {
+    private final UsersService userService;
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(NotFoundException ex) {
@@ -50,24 +50,24 @@ public class usersController {
     }
 
     @GetMapping("/findUsers")
-    public List<usersEntity> findUsers() {
+    public List<UsersEntity> findUsers() {
         return userService.findUsers();
     }
 
     @GetMapping("/findAUser/{id}")
-    public usersEntity findAUser(@PathVariable int id) {
+    public UsersEntity findAUser(@PathVariable int id) {
         return userService.findAUser(id);
     }
 
     @GetMapping("/findUserByEmail/{email}")
-    public List<usersEntity> findAUser(@PathVariable String email) {
+    public List<UsersEntity> findAUser(@PathVariable String email) {
         return userService.findByEmail(email);
     }
 
     @PostMapping("/createUser")
-    public ResponseEntity<usersEntity> createUser(@Valid @RequestBody usersDto body) {
+    public ResponseEntity<UsersEntity> createUser(@Valid @RequestBody UsersDto body) {
 
-        usersEntity createdUser = userService.createUser(body);
+        UsersEntity createdUser = userService.createUser(body);
 
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
@@ -78,7 +78,7 @@ public class usersController {
     }
 
     @PutMapping("/updateUser/{id}")
-    public usersEntity updateUser(@PathVariable int id, @RequestBody usersEntity body) {
+    public UsersEntity updateUser(@PathVariable int id, @RequestBody UsersEntity body) {
         return userService.updateUser(id, body);
 
     }
