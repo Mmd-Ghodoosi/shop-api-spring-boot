@@ -16,18 +16,13 @@ public class usersService {
 
     public usersEntity createUser(usersDto body) {
         usersEntity users = new usersEntity();
-        users.setEmail(body.email());
-        users.setPassword(body.password());
+        users.setEmail(body.getEmail());
+        users.setPassword(body.getPassword());
         return userRepository.save(users);
     }
 
     public List<usersEntity> findUsers() {
-        var user = userRepository.findAll();
-        if (user.isEmpty()) {
-            throw new NotFoundException("no user");
-        }
-        return user;
-
+        return userRepository.findAll();
     }
 
     public usersEntity findAUser(int id) {
