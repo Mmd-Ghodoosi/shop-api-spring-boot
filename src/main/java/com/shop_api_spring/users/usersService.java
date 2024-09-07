@@ -30,10 +30,6 @@ public class UsersService {
 
     }
 
-    public List<UsersEntity> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
     public void deleteAUser(int id) {
         userRepository.deleteById(id);
     }

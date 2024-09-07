@@ -1,4 +1,4 @@
-package com.shop_api_spring.products;
+package com.shop_api_spring.cart;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,15 +13,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductsEntity {
+public class CartEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
-    @SequenceGenerator(name = "product_seq", sequenceName = "product_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_seq")
+    @SequenceGenerator(name = "cart_seq", sequenceName = "cart_sequence", allocationSize = 1)
     private Integer id;
 
     private String name;
     private String price;
     private String colors;
     private String description;
+    private String email;
     private String image;
 }

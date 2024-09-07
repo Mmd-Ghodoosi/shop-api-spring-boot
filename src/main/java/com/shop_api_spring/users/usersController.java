@@ -59,11 +59,6 @@ public class UsersController {
         return userService.findAUser(id);
     }
 
-    @GetMapping("/findUserByEmail/{email}")
-    public List<UsersEntity> findAUser(@PathVariable String email) {
-        return userService.findByEmail(email);
-    }
-
     @PostMapping("/createUser")
     public ResponseEntity<UsersEntity> createUser(@Valid @RequestBody UsersDto body) {
 
