@@ -2,6 +2,7 @@ package com.shop_api_spring.users;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shop_api_spring.exception.BadRequestException;
 import com.shop_api_spring.exception.NotFoundException;
 import com.shop_api_spring.users.dto.UsersDto;
 
@@ -37,6 +38,13 @@ public class UsersController {
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<?> handleUserBadRequestException(BadRequestException ex) {
+        var errors = new HashMap<String, String>();
+        errors.put("error", ex.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         var errors = new HashMap<String, String>();
@@ -49,6 +57,25 @@ public class UsersController {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping("/signup")
+    public UsersEntity signup(@Valid @RequestBody UsersDto body) {
+
+        return userService.signup(body);
+    }
+
+    @PostMapping("/signin")
+    public String signin(@Valid @RequestBody UsersDto body) {
+
+        boolean isAuthenticated = userService.signin(body);
+        if (isAuthenticated) {
+            return "Login successful";
+        } else {
+            return "Invalid credentials";
+
+        }
+
+    }
+
     @GetMapping("/findUsers")
     public List<UsersEntity> findUsers() {
         return userService.findUsers();
@@ -57,14 +84,6 @@ public class UsersController {
     @GetMapping("/findAUser/{id}")
     public UsersEntity findAUser(@PathVariable int id) {
         return userService.findAUser(id);
-    }
-
-    @PostMapping("/createUser")
-    public ResponseEntity<UsersEntity> createUser(@Valid @RequestBody UsersDto body) {
-
-        UsersEntity createdUser = userService.createUser(body);
-
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteAUser/{id}")
